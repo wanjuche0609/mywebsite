@@ -1,0 +1,720 @@
+/* ============================================
+   魏家诚个人主页 - 多巴胺浅色毛玻璃风格
+   灵感参考：网易云音乐 · Glassmorphism
+   ============================================ */
+
+/* ---------- CSS Variables · 多巴胺调色板 ---------- */
+:root {
+    --red: #ec4141;
+    --red-light: #ff6b6b;
+    --orange: #ff9a76;
+    --coral: #ff7eb3;
+    --pink: #f093fb;
+    --purple: #a18cd1;
+    --blue: #45b7d1;
+    --teal: #4ecdc4;
+    --green: #6dd5a8;
+    --yellow: #ffd93d;
+    --peach: #ffecd2;
+
+    --primary: #ec4141;
+    --primary-dark: #d63031;
+    --primary-light: #fff0f0;
+
+    --bg: #f2f3f7;
+    --bg-warm: #fef9f4;
+    --white: #ffffff;
+    --text: #2d3436;
+    --text-light: #636e72;
+    --text-muted: #b2bec3;
+
+    --glass-bg: rgba(255, 255, 255, 0.68);
+    --glass-bg-strong: rgba(255, 255, 255, 0.82);
+    --glass-border: rgba(255, 255, 255, 0.55);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+    --glass-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.09);
+
+    --radius-xl: 24px;
+    --radius: 18px;
+    --radius-sm: 12px;
+    --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    --nav-height: 70px;
+    --max-width: 1100px;
+}
+
+/* ---------- Reset & Base ---------- */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+}
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+img { max-width: 100%; height: auto; display: block; }
+
+/* Page enter animation */
+@keyframes pageIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+body { animation: pageIn 0.5s ease; }
+
+/* ============================================
+   NAVIGATION · 毛玻璃导航
+   ============================================ */
+.nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    height: var(--nav-height);
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    transition: all var(--transition);
+}
+.nav.scrolled {
+    box-shadow: 0 2px 24px rgba(0,0,0,0.06);
+    background: rgba(255,255,255,0.88);
+}
+
+.nav-inner {
+    width: 100%; max-width: var(--max-width);
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 2rem;
+    margin: 0 auto;
+}
+
+.nav-logo {
+    font-size: 1.5rem; font-weight: 800;
+    background: linear-gradient(135deg, var(--red), var(--coral), var(--orange));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 0.04em;
+    transition: all var(--transition);
+}
+.nav-logo:hover { filter: brightness(1.1); transform: scale(1.04); }
+
+.nav-links { display: flex; align-items: center; gap: 8px; }
+
+.nav-links a {
+    padding: 0.5rem 1.3rem;
+    border-radius: 24px;
+    font-size: 0.9rem; font-weight: 500;
+    color: var(--text-light);
+    transition: all var(--transition);
+    position: relative;
+}
+.nav-links a:hover {
+    color: var(--primary);
+    background: var(--primary-light);
+}
+.nav-links a.active {
+    color: #fff;
+    background: var(--primary);
+    box-shadow: 0 4px 16px rgba(236,65,65,0.25);
+}
+
+/* Hamburger */
+.nav-toggle {
+    display: none; flex-direction: column; gap: 5px;
+    background: none; border: none; cursor: pointer; padding: 6px; z-index: 1001;
+}
+.nav-toggle span {
+    display: block; width: 26px; height: 2.5px;
+    background: var(--text); border-radius: 4px;
+    transition: all 0.3s ease;
+}
+.nav-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+/* ============================================
+   HOME PAGE · 星空背景 + 流动粒子
+   ============================================ */
+#starfield {
+    position: fixed; inset: 0; z-index: -2;
+    object-fit: cover;
+    width: 100%; height: 100%;
+}
+#particleCanvas {
+    position: fixed; inset: 0; z-index: -1;
+    pointer-events: none;
+}
+
+.hero-wrapper {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: calc(var(--nav-height) + 2rem) 2rem 4rem;
+}
+
+.hero-card {
+    text-align: center;
+    background: rgba(255,255,255,0.62);
+    backdrop-filter: blur(28px) saturate(200%);
+    -webkit-backdrop-filter: blur(28px) saturate(200%);
+    border: 1px solid rgba(255,255,255,0.6);
+    border-radius: 28px;
+    padding: 3rem 3.5rem 2.5rem;
+    max-width: 580px;
+    box-shadow: 0 12px 60px rgba(0,0,0,0.08), 0 0 0 1px rgba(255,255,255,0.5) inset;
+    transition: all var(--transition);
+    animation: cardRise 1s ease;
+}
+@keyframes cardRise { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+
+.hero-card:hover {
+    box-shadow: 0 20px 80px rgba(0,0,0,0.12), 0 0 0 1px rgba(255,255,255,0.6) inset;
+    transform: translateY(-6px);
+}
+
+.hero-avatar {
+    width: 130px; height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid rgba(255,255,255,0.9);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    margin: 0 auto 1.6rem;
+    transition: all var(--transition);
+}
+.hero-avatar:hover { transform: scale(1.08) rotate(3deg); }
+
+.hero-card h1 {
+    font-size: 2.5rem; font-weight: 800;
+    background: linear-gradient(135deg, #2d3436 20%, #ec4141 50%, #ff9a76 80%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+}
+.hero-card .subtitle {
+    font-size: 1rem; color: var(--text-light); margin-bottom: 0.2rem;
+}
+.hero-card .tagline {
+    font-size: 0.9rem; color: var(--text-muted); margin-bottom: 2rem;
+}
+
+.hero-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.hero-buttons a {
+    padding: 0.65rem 1.8rem; border-radius: 30px;
+    font-weight: 600; font-size: 0.92rem;
+    transition: all var(--transition);
+}
+.btn-primary {
+    background: linear-gradient(135deg, var(--red), var(--coral));
+    color: #fff;
+    box-shadow: 0 6px 24px rgba(236,65,65,0.3);
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 36px rgba(236,65,65,0.4); }
+.btn-outline {
+    border: 2px solid rgba(0,0,0,0.1); color: var(--text);
+}
+.btn-outline:hover { background: rgba(0,0,0,0.03); border-color: rgba(0,0,0,0.2); }
+
+/* Status row */
+.status-row {
+    display: flex; gap: 1.5rem; justify-content: center;
+    margin-top: 2rem; padding-top: 1.5rem;
+    border-top: 1px solid rgba(0,0,0,0.06);
+}
+.status-item { text-align: center; }
+.status-item .num {
+    font-size: 1.4rem; font-weight: 700;
+    background: linear-gradient(135deg, var(--red), var(--orange));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.status-item .label { font-size: 0.75rem; color: var(--text-muted); }
+
+/* ============================================
+   CONTENT PAGES · 浅色多巴胺
+   ============================================ */
+.page-wrapper {
+    min-height: 100vh;
+    padding: calc(var(--nav-height) + 2rem) 2rem 4rem;
+    position: relative; z-index: 1;
+    /* Subtle gradient background */
+    background: linear-gradient(180deg, #fef9f4 0%, #f8f5ff 30%, #f2f3f7 60%, #fef9f4 100%);
+}
+.page-container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+}
+
+/* Page header */
+.page-header {
+    text-align: center; margin-bottom: 3rem;
+}
+.page-header h1 {
+    font-size: 2.2rem; font-weight: 700;
+    background: linear-gradient(135deg, var(--text), var(--red), var(--purple));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.4rem;
+}
+.page-header .line {
+    width: 56px; height: 4px;
+    background: linear-gradient(90deg, var(--red), var(--orange), var(--yellow));
+    border-radius: 4px; margin: 0 auto 0.6rem;
+}
+.page-header p { color: var(--text-muted); font-size: 0.92rem; }
+
+/* ============================================
+   GLASS CARD · 毛玻璃卡片
+   ============================================ */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    box-shadow: var(--glass-shadow);
+    transition: all var(--transition);
+}
+.glass-card:hover {
+    box-shadow: var(--glass-shadow-lg);
+    transform: translateY(-3px);
+    border-color: rgba(0,0,0,0.08);
+}
+
+.glass-card-strong {
+    background: var(--glass-bg-strong);
+    backdrop-filter: blur(30px) saturate(200%);
+    -webkit-backdrop-filter: blur(30px) saturate(200%);
+    border: 1px solid rgba(255,255,255,0.7);
+    border-radius: var(--radius-xl);
+    padding: 2.2rem;
+    box-shadow: var(--glass-shadow-lg);
+}
+
+/* ============================================
+   ABOUT · MBTI 多巴胺卡片
+   ============================================ */
+.mbti-header-row {
+    display: flex; align-items: center; gap: 3rem;
+    flex-wrap: wrap; justify-content: center;
+    margin-bottom: 2.5rem;
+}
+
+.mbti-badge {
+    background: linear-gradient(135deg, #ffd93d, #ff9a76, #ff6b6b);
+    color: #fff;
+    padding: 0.9rem 2.2rem;
+    border-radius: 50px;
+    font-size: 1.7rem; font-weight: 800;
+    letter-spacing: 0.08em;
+    box-shadow: 0 8px 32px rgba(255,154,118,0.35);
+    transition: all var(--transition);
+    animation: badgeGlow 3s ease-in-out infinite;
+}
+@keyframes badgeGlow {
+    0%, 100% { box-shadow: 0 8px 32px rgba(255,154,118,0.35); }
+    50% { box-shadow: 0 14px 48px rgba(255,154,118,0.55), 0 0 0 8px rgba(255,154,118,0.08); }
+}
+.mbti-badge small { font-size: 0.65rem; font-weight: 500; display: block; opacity: 0.9; }
+
+.mbti-img-wrap img {
+    width: 240px; border-radius: var(--radius);
+    box-shadow: var(--glass-shadow-lg);
+}
+
+/* MBTI Bars */
+.mbti-bars { display: grid; gap: 1rem; max-width: 680px; margin: 0 auto 3rem; }
+.bar-item { }
+.bar-label {
+    display: flex; justify-content: space-between;
+    font-size: 0.88rem; font-weight: 600;
+    margin-bottom: 0.35rem;
+}
+.bar-track {
+    height: 10px; background: rgba(0,0,0,0.05);
+    border-radius: 10px; overflow: hidden;
+}
+.bar-fill {
+    height: 100%; border-radius: 10px;
+    transition: width 1.5s cubic-bezier(0.4,0,0.2,1);
+}
+.bar-fill.e { background: linear-gradient(90deg, #ff6b6b, #ff9a76); }
+.bar-fill.n { background: linear-gradient(90deg, #a18cd1, #f093fb); }
+.bar-fill.f { background: linear-gradient(90deg, #f093fb, #ff7eb3); }
+.bar-fill.p { background: linear-gradient(90deg, #4ecdc4, #6dd5a8); }
+.bar-fill.t { background: linear-gradient(90deg, #ffd93d, #ff9a76); }
+
+/* MBTI detail cards row */
+.mbti-cards { display: grid; gap: 1.2rem; }
+.mbti-cards .glass-card { border-left: 4px solid var(--red); border-radius: var(--radius-sm) var(--radius) var(--radius) var(--radius-sm); }
+.mbti-cards .glass-card:nth-child(2) { border-left-color: var(--purple); }
+.mbti-cards .glass-card:nth-child(3) { border-left-color: var(--pink); }
+.mbti-cards .glass-card:nth-child(4) { border-left-color: var(--teal); }
+.mbti-cards .glass-card:nth-child(5) { border-left-color: var(--orange); }
+.mbti-cards .glass-card h3 { font-size: 1rem; margin-bottom: 0.5rem; color: var(--text); }
+.mbti-cards .glass-card p { color: var(--text-light); font-size: 0.9rem; text-indent: 2em; }
+
+/* ============================================
+   HOBBY · 兴趣画廊
+   ============================================ */
+.hobby-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+.hobby-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--glass-shadow);
+    transition: all var(--transition);
+}
+.hobby-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--glass-shadow-lg), 0 0 40px rgba(236,65,65,0.06);
+}
+
+.hobby-card-header {
+    padding: 1.5rem 1.5rem 0;
+    display: flex; align-items: center; gap: 0.7rem;
+}
+.hobby-icon {
+    width: 46px; height: 46px;
+    border-radius: 15px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    transition: all var(--transition);
+    color: #fff;
+}
+.hobby-card:hover .hobby-icon { transform: scale(1.15) rotate(-6deg); }
+.hobby-icon.travel { background: linear-gradient(135deg, #4ecdc4, #6dd5a8); }
+.hobby-icon.movie { background: linear-gradient(135deg, #a18cd1, #f093fb); }
+.hobby-icon.food { background: linear-gradient(135deg, #ff9a76, #ffd93d); }
+.hobby-icon.party { background: linear-gradient(135deg, #ff6b6b, #ff7eb3); }
+
+.hobby-card-header h3 { font-size: 1.1rem; }
+
+.hobby-imgs {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 5px; padding: 1rem 1.5rem;
+}
+.hobby-imgs img {
+    width: 100%; aspect-ratio: 1;
+    object-fit: cover; border-radius: 10px;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+.hobby-imgs img:hover { transform: scale(1.12); z-index: 2; box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+
+.hobby-card > p {
+    padding: 0 1.5rem 1.5rem;
+    font-size: 0.9rem; color: var(--text-light);
+    text-indent: 2em;
+}
+
+/* ============================================
+   SKILLS · 技能动态卡片
+   ============================================ */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.8rem;
+}
+.skill-card { }
+
+.skill-card h3 {
+    font-size: 1.05rem; margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.6rem;
+    color: var(--text);
+}
+.skill-icon-sm {
+    width: 40px; height: 40px;
+    border-radius: 13px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.15rem; flex-shrink: 0;
+    color: #fff;
+    transition: all var(--transition);
+    animation: iconBounce 3s ease-in-out infinite;
+}
+@keyframes iconBounce {
+    0%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-8px); }
+    60% { transform: translateY(0); }
+}
+.skill-icon-sm.c1 { background: linear-gradient(135deg, #45b7d1, #4ecdc4); animation-delay: 0s; }
+.skill-icon-sm.c2 { background: linear-gradient(135deg, #ff9a76, #ff6b6b); animation-delay: 0.6s; }
+.skill-icon-sm.c3 { background: linear-gradient(135deg, #6dd5a8, #4ecdc4); animation-delay: 1.2s; }
+.skill-icon-sm.c4 { background: linear-gradient(135deg, #a18cd1, #f093fb); animation-delay: 1.8s; }
+
+.skill-list li {
+    padding: 0.5rem 0;
+    font-size: 0.9rem; color: var(--text-light);
+    border-bottom: 1px solid rgba(0,0,0,0.03);
+    display: flex; align-items: center; gap: 0.5rem;
+}
+.skill-list li::before {
+    content: '✦'; font-size: 0.5rem;
+    color: var(--red);
+}
+
+.skill-progress { margin-top: 1rem; }
+.skill-progress-item { margin-bottom: 0.9rem; }
+.skill-progress-label {
+    display: flex; justify-content: space-between;
+    font-size: 0.84rem; color: var(--text-light);
+    margin-bottom: 0.3rem;
+}
+.skill-progress-track {
+    height: 8px; background: rgba(0,0,0,0.05);
+    border-radius: 8px; overflow: hidden;
+}
+.skill-progress-fill {
+    height: 100%; border-radius: 8px;
+    background: linear-gradient(90deg, var(--red), var(--coral), var(--orange));
+    transition: width 1.5s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ============================================
+   TIMELINE · 学生工作
+   ============================================ */
+.timeline {
+    position: relative;
+    max-width: 680px; margin: 0 auto;
+    padding-left: 38px;
+}
+.timeline::before {
+    content: ''; position: absolute;
+    left: 14px; top: 0; bottom: 0;
+    width: 3px;
+    border-radius: 3px;
+    background: linear-gradient(to bottom, var(--red), var(--coral), var(--orange), var(--yellow));
+}
+.timeline-item {
+    position: relative;
+    margin-bottom: 2rem;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    padding: 1.5rem 1.8rem;
+    box-shadow: var(--glass-shadow);
+    transition: all var(--transition);
+}
+.timeline-item:hover {
+    transform: translateX(8px);
+    box-shadow: var(--glass-shadow-lg);
+}
+.timeline-item::before {
+    content: ''; position: absolute;
+    left: -33px; top: 26px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: #fff;
+    border: 4px solid var(--red);
+    box-shadow: 0 0 0 6px rgba(236,65,65,0.1);
+}
+.timeline-item:nth-child(2)::before { border-color: var(--coral); }
+.timeline-item:nth-child(3)::before { border-color: var(--orange); }
+.timeline-item h3 { font-size: 1rem; color: var(--text); margin-bottom: 0.4rem; }
+.timeline-item p { font-size: 0.9rem; color: var(--text-light); text-indent: 2em; }
+.timeline-item ul { margin-top: 0.5rem; }
+.timeline-item ul li {
+    font-size: 0.88rem; color: var(--text-light);
+    padding: 0.25rem 0 0.25rem 1.2rem; position: relative;
+}
+.timeline-item ul li::before {
+    content: '•'; position: absolute; left: 0; color: var(--red);
+}
+
+/* ============================================
+   CONTACT · 联系卡片
+   ============================================ */
+.contact-wrap {
+    display: flex; align-items: center; gap: 3rem;
+    flex-wrap: wrap; justify-content: center;
+    max-width: 700px; margin: 0 auto;
+}
+.contact-logo img {
+    width: 200px; border-radius: var(--radius);
+    box-shadow: var(--glass-shadow-lg), 0 0 40px rgba(236,65,65,0.06);
+    transition: all var(--transition);
+}
+.contact-logo img:hover { transform: scale(1.06) rotate(-2deg); }
+
+.contact-info { flex: 1; min-width: 280px; }
+.contact-item {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+    transition: all var(--transition);
+}
+.contact-item:hover { padding-left: 0.5rem; }
+.c-icon {
+    width: 44px; height: 44px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; flex-shrink: 0;
+    color: #fff;
+    transition: all var(--transition);
+    animation: iconBounce 3s ease-in-out infinite;
+}
+.c-icon:hover { transform: scale(1.2) !important; }
+.c-icon.phone { background: linear-gradient(135deg, #4ecdc4, #6dd5a8); animation-delay: 0s; }
+.c-icon.qq { background: linear-gradient(135deg, #45b7d1, #4ecdc4); animation-delay: 0.4s; }
+.c-icon.wechat { background: linear-gradient(135deg, #6dd5a8, #a8e6cf); animation-delay: 0.8s; }
+.c-icon.email { background: linear-gradient(135deg, #ff9a76, #ff6b6b); animation-delay: 1.2s; }
+.c-icon.name { background: linear-gradient(135deg, #a18cd1, #f093fb); animation-delay: 0.2s; }
+
+.contact-item .c-label { font-size: 0.76rem; color: var(--text-muted); }
+.contact-item .c-value { font-size: 0.95rem; font-weight: 500; }
+
+.motto {
+    margin-top: 2.5rem; text-align: center;
+    font-size: 1.2rem;
+    background: linear-gradient(135deg, var(--red), var(--coral), var(--purple));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-style: italic; font-weight: 700;
+}
+
+/* ============================================
+   EXPERIENCE SUMMARY · 首页下方简介
+   ============================================ */
+.exp-summary {
+    background: var(--glass-bg-strong);
+    backdrop-filter: blur(30px) saturate(200%);
+    -webkit-backdrop-filter: blur(30px) saturate(200%);
+    border: 1px solid rgba(255,255,255,0.7);
+    border-radius: var(--radius-xl);
+    padding: 2.2rem;
+    box-shadow: var(--glass-shadow-lg);
+    max-width: 700px; margin: 0 auto 2rem;
+    border-left: 4px solid var(--red);
+}
+.exp-summary h3 { color: var(--red); margin-bottom: 0.5rem; font-size: 1.05rem; }
+.exp-summary p { color: var(--text-light); font-size: 0.9rem; text-indent: 2em; }
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-muted);
+    font-size: 0.84rem;
+    position: relative; z-index: 1;
+}
+
+/* ============================================
+   BACK TO TOP · 毛玻璃圆形按钮
+   ============================================ */
+.back-to-top {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(0,0,0,0.06);
+    color: var(--red);
+    cursor: pointer;
+    font-size: 1.3rem;
+    font-weight: bold;
+    box-shadow: var(--glass-shadow);
+    opacity: 0; visibility: hidden;
+    transform: translateY(10px);
+    transition: all var(--transition);
+}
+.back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
+.back-to-top:hover {
+    background: var(--red);
+    color: #fff;
+    box-shadow: 0 8px 28px rgba(236,65,65,0.3);
+    transform: translateY(-4px);
+}
+
+/* ============================================
+   LIGHTBOX · 照片灯箱
+   ============================================ */
+.lightbox {
+    position: fixed; inset: 0; z-index: 2000;
+    background: rgba(0,0,0,0.92);
+    backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; visibility: hidden;
+    transition: all 0.3s ease;
+}
+.lightbox.open { opacity: 1; visibility: visible; }
+.lightbox img { max-width: 90vw; max-height: 85vh; border-radius: 12px; }
+.lightbox-close {
+    position: absolute; top: 1.5rem; right: 2rem;
+    font-size: 2.8rem; color: #fff; cursor: pointer;
+    background: none; border: none; line-height: 1;
+}
+.lightbox-prev, .lightbox-next {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    font-size: 2rem; color: #fff; cursor: pointer;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(8px);
+    border: none;
+    width: 48px; height: 76px; border-radius: 12px;
+    transition: all var(--transition);
+}
+.lightbox-prev:hover, .lightbox-next:hover { background: rgba(255,255,255,0.22); }
+.lightbox-prev { left: 1.5rem; }
+.lightbox-next { right: 1.5rem; }
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 1024px) {
+    .hobby-grid, .skills-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+    :root { --nav-height: 60px; }
+
+    .nav-links {
+        position: fixed; top: 0; right: -100%;
+        width: 280px; height: 100vh;
+        background: rgba(255,255,255,0.96);
+        backdrop-filter: blur(30px);
+        flex-direction: column; gap: 0;
+        padding: 5rem 1.5rem 2rem;
+        box-shadow: -4px 0 40px rgba(0,0,0,0.1);
+        transition: right var(--transition);
+        align-items: stretch;
+    }
+    .nav-links.open { right: 0; }
+    .nav-links a { padding: 0.9rem 1rem; border-radius: 12px; font-size: 1rem; }
+    .nav-toggle { display: flex; }
+
+    .hero-card { padding: 2rem 1.5rem; }
+    .hero-card h1 { font-size: 2rem; }
+
+    .page-wrapper { padding: calc(var(--nav-height) + 1.5rem) 1rem 3rem; }
+    .page-header h1 { font-size: 1.7rem; }
+
+    .mbti-header-row { gap: 1.5rem; }
+    .mbti-img-wrap img { width: 170px; margin: 0 auto; }
+    .mbti-badge { font-size: 1.3rem; padding: 0.6rem 1.5rem; }
+
+    .hobby-imgs { grid-template-columns: repeat(2, 1fr); }
+
+    .contact-wrap { gap: 1.5rem; }
+    .contact-logo img { width: 140px; margin: 0 auto; }
+
+    .timeline { padding-left: 28px; }
+    .timeline-item { padding: 1.2rem 1rem; }
+    .timeline-item::before { left: -26px; width: 12px; height: 12px; }
+    .timeline::before { left: 10px; }
+
+    .back-to-top { bottom: 1rem; right: 1rem; width: 42px; height: 42px; }
+    .status-row { gap: 1rem; }
+}
