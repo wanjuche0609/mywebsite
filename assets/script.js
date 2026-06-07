@@ -1,6 +1,6 @@
 /* ============================================
-   魏家诚个人主页 - 交互脚本 (五页版)
-   Starfield Engine + Mouse Parallax + Dynamic Icons
+   魏家诚个人主页 - 交互脚本
+   星空流动粒子 · 鼠标视差 · 动态图标
    ============================================ */
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -11,7 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const navToggle = document.querySelector('.nav-toggle');
     const navMenu = document.querySelector('.nav-links');
     const backToTop = document.querySelector('.back-to-top');
-    const starCanvas = document.getElementById('starfield');
+    const starBg = document.getElementById('starfield');
+    const particleCanvas = document.getElementById('particleCanvas');
     const hobbyImgs = document.querySelectorAll('.hobby-imgs img');
     const lightbox = document.querySelector('.lightbox');
     const lightboxImg = lightbox ? lightbox.querySelector('img') : null;
@@ -29,150 +30,159 @@ document.addEventListener('DOMContentLoaded', function() {
     let targetMouseX = 0.5, targetMouseY = 0.5;
 
     /* ============================================
-       STARFIELD ENGINE (首页 Canvas 星空)
+       STARFIELD FLOW PARTICLES (首页粒子流动)
        ============================================ */
-    if (starCanvas) {
-        const ctx = starCanvas.getContext('2d');
-        let stars = [];
-        const STAR_COUNT = 180;
+    if (particleCanvas) {
+        const ctx = particleCanvas.getContext('2d');
+        let particles = [];
+        const PARTICLE_COUNT = 100;
         let width, height;
         let animationId;
 
-        function resizeStarfield() {
+        function resizeCanvas() {
             width = window.innerWidth;
             height = window.innerHeight;
-            starCanvas.width = width;
-            starCanvas.height = height;
+            particleCanvas.width = width;
+            particleCanvas.height = height;
         }
 
-        function createStars() {
-            stars = [];
-            for (let i = 0; i < STAR_COUNT; i++) {
-                stars.push({
+        function createParticles() {
+            particles = [];
+            for (let i = 0; i < PARTICLE_COUNT; i++) {
+                particles.push({
                     x: Math.random() * width,
                     y: Math.random() * height,
-                    z: Math.random() * 0.9 + 0.1,  // depth: 0.1 (far) to 1 (near)
-                    baseSize: Math.random() * 2.2 + 0.5,
-                    twinkleSpeed: Math.random() * 0.02 + 0.005,
+                    size: Math.random() * 2.5 + 0.5,
+                    speedX: (Math.random() - 0.5) * 0.4,
+                    speedY: (Math.random() - 0.5) * 0.4,
+                    opacity: Math.random() * 0.7 + 0.2,
+                    twinkleSpeed: Math.random() * 0.03 + 0.008,
                     twinkleOffset: Math.random() * Math.PI * 2,
-                    hue: Math.random() < 0.15 ? 210 + Math.random() * 40 : 260 + Math.random() * 30  // mostly purple-blue, some blue
+                    color: Math.random() < 0.4 ? '255,255,255' : (Math.random() < 0.5 ? '200,220,255' : '255,220,240')
                 });
             }
-            // Sort by z for depth layering
-            stars.sort(function(a, b) { return a.z - b.z; });
         }
 
-        function drawStars() {
+        function drawParticles() {
             ctx.clearRect(0, 0, width, height);
 
             // Smooth mouse tracking
-            mouseX += (targetMouseX - mouseX) * 0.05;
-            mouseY += (targetMouseY - mouseY) * 0.05;
+            mouseX += (targetMouseX - mouseX) * 0.04;
+            mouseY += (targetMouseY - mouseY) * 0.04;
 
-            var parallaxX = (mouseX - 0.5) * 60;
-            var parallaxY = (mouseY - 0.5) * 60;
+            var flowX = (mouseX - 0.5) * 25;
+            var flowY = (mouseY - 0.5) * 25;
 
             var time = Date.now() * 0.001;
 
-            for (var i = 0; i < stars.length; i++) {
-                var s = stars[i];
+            for (var i = 0; i < particles.length; i++) {
+                var p = particles[i];
 
-                // Parallax: closer stars move more with mouse
-                var px = s.x + parallaxX * s.z;
-                var py = s.y + parallaxY * s.z;
+                // Move particle
+                p.x += p.speedX + flowX * 0.015;
+                p.y += p.speedY + flowY * 0.015;
 
-                // Wrap around screen edges
-                if (px < -20) px += width + 40;
-                if (px > width + 20) px -= width + 40;
-                if (py < -20) py += height + 40;
-                if (py > height + 20) py -= height + 40;
+                // Wrap around
+                if (p.x < -20) p.x = width + 20;
+                if (p.x > width + 20) p.x = -20;
+                if (p.y < -20) p.y = height + 20;
+                if (p.y > height + 20) p.y = -20;
 
                 // Twinkle
-                var twinkle = Math.sin(time * s.twinkleSpeed * 60 + s.twinkleOffset) * 0.35 + 0.65;
-                var alpha = twinkle * (0.35 + s.z * 0.65);
-                var size = s.baseSize * (0.7 + s.z * 0.5) * twinkle;
+                var twinkle = Math.sin(time * p.twinkleSpeed * 50 + p.twinkleOffset) * 0.4 + 0.6;
+                var alpha = p.opacity * twinkle;
 
-                // Glow effect for near stars
-                if (s.z > 0.75) {
-                    var glow = ctx.createRadialGradient(px, py, 0, px, py, size * 3);
-                    var hueStr = 'hsla(' + s.hue + ', 70%, 75%, ' + (alpha * 0.35) + ')';
-                    var transparentStr = 'hsla(' + s.hue + ', 70%, 75%, 0)';
-                    glow.addColorStop(0, hueStr);
-                    glow.addColorStop(1, transparentStr);
+                // Glow
+                if (p.size > 1.8 && twinkle > 0.85) {
+                    var glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 5);
+                    glow.addColorStop(0, 'rgba(' + p.color + ',' + (alpha * 0.4) + ')');
+                    glow.addColorStop(1, 'rgba(' + p.color + ',0)');
                     ctx.fillStyle = glow;
                     ctx.beginPath();
-                    ctx.arc(px, py, size * 3, 0, Math.PI * 2);
+                    ctx.arc(p.x, p.y, p.size * 5, 0, Math.PI * 2);
                     ctx.fill();
                 }
 
-                // Draw star
-                ctx.fillStyle = 'hsla(' + s.hue + ', 60%, ' + (70 + s.z * 30) + '%, ' + alpha + ')';
+                // Star with cross sparkle
+                ctx.fillStyle = 'rgba(' + p.color + ',' + alpha + ')';
                 ctx.beginPath();
-                ctx.arc(px, py, size, 0, Math.PI * 2);
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                 ctx.fill();
 
-                // Cross sparkle for brightest stars
-                if (s.z > 0.85 && twinkle > 0.85) {
-                    ctx.strokeStyle = 'hsla(' + s.hue + ', 70%, 90%, ' + (alpha * 0.6) + ')';
-                    ctx.lineWidth = 0.5;
+                // Bright sparkle
+                if (twinkle > 0.9 && p.size > 1.5) {
+                    ctx.strokeStyle = 'rgba(' + p.color + ',' + (alpha * 0.6) + ')';
+                    ctx.lineWidth = 0.4;
                     ctx.beginPath();
-                    ctx.moveTo(px - size * 4, py);
-                    ctx.lineTo(px + size * 4, py);
-                    ctx.moveTo(px, py - size * 4);
-                    ctx.lineTo(px, py + size * 4);
+                    ctx.moveTo(p.x - p.size * 5, p.y);
+                    ctx.lineTo(p.x + p.size * 5, p.y);
+                    ctx.moveTo(p.x, p.y - p.size * 5);
+                    ctx.lineTo(p.x, p.y + p.size * 5);
                     ctx.stroke();
                 }
             }
 
-            // Shooting star (occasional)
-            if (Math.random() < 0.008) {
+            // Occasional shooting star
+            if (Math.random() < 0.006) {
                 var sx = Math.random() * width;
-                var sy = Math.random() * height * 0.6;
-                var len = 80 + Math.random() * 120;
-                var angle = Math.PI * 0.25;
-                ctx.strokeStyle = 'rgba(255,255,255,0.7)';
+                var sy = Math.random() * height * 0.5;
+                var slen = 60 + Math.random() * 100;
+                var angle = Math.PI * 0.22;
+                var grad = ctx.createLinearGradient(sx, sy, sx - slen * Math.cos(angle), sy + slen * Math.sin(angle));
+                grad.addColorStop(0, 'rgba(255,255,255,0.75)');
+                grad.addColorStop(1, 'rgba(255,255,255,0)');
+                ctx.strokeStyle = grad;
                 ctx.lineWidth = 1.5;
                 ctx.beginPath();
                 ctx.moveTo(sx, sy);
-                ctx.lineTo(sx - len * Math.cos(angle), sy + len * Math.sin(angle));
-                var grad = ctx.createLinearGradient(sx, sy,
-                    sx - len * Math.cos(angle), sy + len * Math.sin(angle));
-                grad.addColorStop(0, 'rgba(255,255,255,0.8)');
-                grad.addColorStop(1, 'rgba(255,255,255,0)');
-                ctx.strokeStyle = grad;
+                ctx.lineTo(sx - slen * Math.cos(angle), sy + slen * Math.sin(angle));
                 ctx.stroke();
             }
 
-            animationId = requestAnimationFrame(drawStars);
+            animationId = requestAnimationFrame(drawParticles);
         }
 
-        resizeStarfield();
-        createStars();
-        drawStars();
+        resizeCanvas();
+        createParticles();
+        drawParticles();
 
         window.addEventListener('resize', function() {
-            resizeStarfield();
-            createStars();
+            resizeCanvas();
+            createParticles();
         });
     }
 
     /* ============================================
-       MOUSE TRACKING (全局)
+       MOUSE PARALLAX · 鼠标视差
        ============================================ */
     document.addEventListener('mousemove', function(e) {
         targetMouseX = e.clientX / window.innerWidth;
         targetMouseY = e.clientY / window.innerHeight;
 
-        // Hero card gentle tilt (首页)
+        // Star background subtle parallax
+        if (starBg && starBg.tagName === 'IMG') {
+            var sx = (targetMouseX - 0.5) * 12;
+            var sy = (targetMouseY - 0.5) * 12;
+            starBg.style.transform = 'scale(1.08) translate(' + sx + 'px, ' + sy + 'px)';
+        }
+
+        // Hero card gentle tilt
         if (heroCard) {
-            var tiltX = (targetMouseY - 0.5) * 6;
-            var tiltY = (targetMouseX - 0.5) * 6;
-            heroCard.style.transform = 'perspective(800px) rotateX(' + (-tiltX) + 'deg) rotateY(' + tiltY + 'deg) translateY(-4px)';
+            var tiltX = (targetMouseY - 0.5) * 5;
+            var tiltY = (targetMouseX - 0.5) * 5;
+            heroCard.style.transform = 'perspective(800px) rotateX(' + (-tiltX) + 'deg) rotateY(' + tiltY + 'deg)';
         }
         if (heroAvatar) {
-            var atilt = (targetMouseX - 0.5) * 3;
-            heroAvatar.style.transform = 'rotate(' + atilt + 'deg)';
+            var at = (targetMouseX - 0.5) * 3;
+            heroAvatar.style.transform = 'rotate(' + at + 'deg)';
         }
+    });
+
+    // Reset transform on mouse leave
+    document.addEventListener('mouseleave', function() {
+        if (heroCard) heroCard.style.transform = '';
+        if (heroAvatar) heroAvatar.style.transform = '';
+        if (starBg && starBg.tagName === 'IMG') starBg.style.transform = 'scale(1.05)';
     });
 
     // ========== NAV SCROLL SHADOW ==========
@@ -230,7 +240,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // ========== ANIMATE BARS ON SCROLL (about.html / skill.html) ==========
+    // ========== ANIMATE BARS ON SCROLL ==========
     var barsAnimated = false;
     var skillsAnimated = false;
 
@@ -240,7 +250,7 @@ document.addEventListener('DOMContentLoaded', function() {
         barFills.forEach(function(bar, i) {
             var w = bar.style.width || bar.dataset.width || '0%';
             bar.style.width = '0%';
-            setTimeout(function() { bar.style.width = w; }, i * 140);
+            setTimeout(function() { bar.style.width = w; }, i * 150);
         });
     }
 
@@ -250,7 +260,7 @@ document.addEventListener('DOMContentLoaded', function() {
         skillFills.forEach(function(fill, i) {
             var w = fill.dataset.width || '0%';
             fill.style.width = '0%';
-            setTimeout(function() { fill.style.width = w; }, i * 160);
+            setTimeout(function() { fill.style.width = w; }, i * 170);
         });
     }
 
@@ -271,7 +281,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // ========== LIGHTBOX (hobby.html) ==========
+    // ========== LIGHTBOX ==========
     function openLightbox(index) {
         if (!lightbox || !lightboxImg || !lightboxImages.length) return;
         lightboxIndex = index;
