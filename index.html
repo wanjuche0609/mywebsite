@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>魏家诚 — 个人主页</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<!-- ==================== NAVIGATION ==================== -->
+<nav class="nav">
+    <div class="nav-inner">
+        <a href="#home" class="nav-logo">魏家诚</a>
+        <div class="nav-links">
+            <a href="#home" class="active">首页</a>
+            <a href="#about">关于我</a>
+            <a href="#hobbies">兴趣爱好</a>
+            <a href="#skills">我的技能</a>
+            <a href="#contact">联系我</a>
+        </div>
+        <button class="nav-toggle" aria-label="菜单">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<!-- ==================== HERO SECTION ==================== -->
+<section class="hero" id="home">
+    <div class="hero-content">
+        <img src="photo/photo.jpg" alt="魏家诚" class="hero-avatar">
+        <h1>魏家诚</h1>
+        <p class="subtitle">湖北大学商学院 · 2024级大数据管理与应用</p>
+        <p class="tagline">开朗从容 · 踏实严谨 · 勤学笃行</p>
+        <div class="hero-cta">
+            <a href="#about" class="btn-primary">了解更多</a>
+            <a href="#contact" class="btn-outline">联系我</a>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== ABOUT / MBTI SECTION ==================== -->
+<section class="section reveal" id="about">
+    <div class="section-header">
+        <h2>关于我</h2>
+        <div class="section-line"></div>
+        <p>了解我的人格特质与性格画像</p>
+    </div>
+
+    <!-- MBTI Badge + Image -->
+    <div class="mbti-header">
+        <div class="mbti-img-wrap">
+            <img src="photo/mbti.jpg" alt="MBTI测试结果">
+        </div>
+        <div>
+            <div class="mbti-badge">ENFP-T <small>竞选者</small></div>
+            <p style="text-align:center;margin-top:0.6rem;color:var(--text-light);font-size:0.92rem;">外向 · 直觉 · 情感 · 感知 · 起伏不定</p>
+        </div>
+    </div>
+
+    <!-- MBTI Dimension Bars -->
+    <div class="mbti-bars">
+        <div class="mbti-bar-item">
+            <div class="mbti-bar-label"><span>外向 E — Extraversion</span><span>71%</span></div>
+            <div class="mbti-bar-track"><div class="mbti-bar-fill e" style="width:71%" data-width="71%"></div></div>
+        </div>
+        <div class="mbti-bar-item">
+            <div class="mbti-bar-label"><span>直觉 N — iNtuition</span><span>56%</span></div>
+            <div class="mbti-bar-track"><div class="mbti-bar-fill n" style="width:56%" data-width="56%"></div></div>
+        </div>
+        <div class="mbti-bar-item">
+            <div class="mbti-bar-label"><span>情感 F — Feeling</span><span>91%</span></div>
+            <div class="mbti-bar-track"><div class="mbti-bar-fill f" style="width:91%" data-width="91%"></div></div>
+        </div>
+        <div class="mbti-bar-item">
+            <div class="mbti-bar-label"><span>感知 P — Perceiving</span><span>52%</span></div>
+            <div class="mbti-bar-track"><div class="mbti-bar-fill p" style="width:52%" data-width="52%"></div></div>
+        </div>
+        <div class="mbti-bar-item">
+            <div class="mbti-bar-label"><span>动荡 T — Turbulent</span><span>85%</span></div>
+            <div class="mbti-bar-track"><div class="mbti-bar-fill t" style="width:85%" data-width="85%"></div></div>
+        </div>
+    </div>
+
+    <!-- MBTI Detail Cards -->
+    <div class="mbti-detail">
+        <div class="mbti-detail-card">
+            <h3>🌐 E 外向 Extraversion（71%）</h3>
+            <p>我属于高外向型人格，更喜欢从与人交往、社交互动、集体活动中获取能量，乐于主动结识新朋友，擅长表达自身想法，性格开朗热情，不喜欢独处压抑的环境。在团队中积极活跃、善于沟通带动氛围，愿意主动交流分享，待人真诚大方，乐于参与集体事务，适应多人社交场景，拥有很强的亲和力与感染力。</p>
+        </div>
+        <div class="mbti-detail-card">
+            <h3>🔮 N 直觉 iNtuition（56%）</h3>
+            <p>我的远见直觉占比56%，相比现实细节，更擅长思考未来、联想想象、洞察事物深层含义与发展可能性。不局限于眼前现状，喜欢畅想未来规划、探索新鲜创意与新奇想法，思维灵活跳跃，富有想象力与创造力，擅长发散思考，对未知事物充满好奇，擅长捕捉灵感、挖掘事物背后的规律与长远趋势。</p>
+        </div>
+        <div class="mbti-detail-card">
+            <h3>💗 F 情感 Feeling（91%）</h3>
+            <p>情感型占比高达91%，是人格核心特质。做选择时优先考虑人情、感受、共情他人情绪，心思细腻温柔，同理心极强，善于换位思考，在意他人心情与人际关系和谐。做事感性温柔、善良体贴，重视温暖真诚的相处模式，容易感知身边人的情绪变化，懂得包容体谅他人，看重情感联结，不喜欢冰冷理性、生硬冷漠的处事方式。</p>
+        </div>
+        <div class="mbti-detail-card">
+            <h3>🍃 P 感知 Perceiving（52%）</h3>
+            <p>随性展望型占比52%，喜欢灵活自由、轻松多变的生活节奏，不喜欢死板严格的计划与束缚。乐于接受变化，擅长随机应变，适应能力强，做事随性松弛，愿意保留更多可能性，不急于下定论。生活与学习中灵活变通，思维开放自由，享受探索新鲜事物，讨厌刻板约束，擅长灵活应对突发状况。</p>
+        </div>
+        <div class="mbti-detail-card">
+            <h3>🌊 T 动荡特质 Turbulent（85%）</h3>
+            <p>动荡型人格占比85%，内心敏感细腻，情绪丰富细腻，自我要求较高，容易反思自我、在意他人看法，情绪波动相对明显。对待事情认真上心，容易多想、思虑周全，同时也拥有很强自我成长动力，愿意不断调整自己、完善自身，内心柔软细腻，情感丰富饱满，富有共情力与细腻的内心世界。</p>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== HOBBIES SECTION ==================== -->
+<section class="section reveal" id="hobbies">
+    <div class="section-header">
+        <h2>兴趣爱好</h2>
+        <div class="section-line"></div>
+        <p>热爱生活 · 探索世界</p>
+    </div>
+
+    <div class="hobby-grid">
+        <!-- Travel -->
+        <div class="hobby-card">
+            <div class="hobby-card-header">
+                <div class="hobby-icon travel">✈</div>
+                <h3>旅行</h3>
+            </div>
+            <div class="hobby-imgs">
+                <img src="photo/travel1.jpg" alt="旅行照片1">
+                <img src="photo/travel2.jpg" alt="旅行照片2">
+                <img src="photo/travel3.jpg" alt="旅行照片3">
+                <img src="photo/travel4.jpg" alt="旅行照片4">
+            </div>
+            <p>我热爱在课余闲暇时光外出旅行，乐于走遍各地领略不同地域的人文风貌与民俗风情，用心感受山河辽阔、市井烟火，用镜头与文字记录沿途美好风光。在旅途之中拓宽眼界格局、增长见识阅历，舒缓身心压力、调节心态情绪，同时不断提升自身共情能力与眼界格局，以更加包容开阔的心态面对学习与生活。</p>
+        </div>
+
+        <!-- Movies -->
+        <div class="hobby-card">
+            <div class="hobby-card-header">
+                <div class="hobby-icon movie">🎬</div>
+                <h3>电影</h3>
+            </div>
+            <div class="hobby-imgs">
+                <img src="photo/cinema1.jpg" alt="电影照片1">
+                <img src="photo/cinema2.jpg" alt="电影照片2">
+                <img src="photo/cinema3.jpg" alt="电影照片3">
+                <img src="photo/cinema4.jpg" alt="电影照片4">
+            </div>
+            <p>我热衷于观看不同类型的电影，涵盖剧情、悬疑、温情、现实等多种题材，始终享受在光影故事中沉浸式感受多元人生的过程。我喜欢跟随影片镜头，走进不同角色的生活轨迹，体会他们的喜怒哀乐与成长蜕变，在他人的故事里感悟生活的多样性与复杂性。品味影片的镜头语言、叙事手法与剧情表达，感受光影艺术与故事表达结合的独特魅力。</p>
+        </div>
+
+        <!-- Food -->
+        <div class="hobby-card">
+            <div class="hobby-card-header">
+                <div class="hobby-icon food">🍜</div>
+                <h3>美食</h3>
+            </div>
+            <div class="hobby-imgs">
+                <img src="photo/food1.jpg" alt="美食照片1">
+                <img src="photo/food2.jpg" alt="美食照片2">
+                <img src="photo/food3.jpg" alt="美食照片3">
+                <img src="photo/food4.jpg" alt="美食照片4">
+            </div>
+            <p>我热衷于探索和品尝各类美食，无论是街头巷尾的特色小吃，还是精致餐厅的创意料理，都能让我感受到生活的美好。我喜欢尝试不同地域的菜系，了解其背后的文化渊源和烹饪技艺，从酸甜麻辣的丰富口味中体验多元的饮食文化。品尝美食不仅是味蕾的享受，更是一种探索世界、感受生活温度的方式。</p>
+        </div>
+
+        <!-- Party & Murder Mystery -->
+        <div class="hobby-card">
+            <div class="hobby-card-header">
+                <div class="hobby-icon party">🎭</div>
+                <h3>剧本杀 & 聚会</h3>
+            </div>
+            <div class="hobby-imgs">
+                <img src="photo/party1.jpg" alt="聚会照片1">
+                <img src="photo/party2.jpg" alt="聚会照片2">
+                <img src="photo/party3.jpg" alt="聚会照片3">
+                <img src="photo/party4.jpg" alt="聚会照片4">
+            </div>
+            <p>我非常享受与朋友们一起玩剧本杀和聚会的时光。剧本杀不仅能锻炼我的逻辑推理能力和角色扮演能力，还能在充满悬念和趣味的故事中与伙伴们互动协作，体验不同的人生百态。聚会则是维系友谊、放松心情的绝佳方式，大家围坐在一起分享生活、交流心得，让我感受到温暖和归属感。</p>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SKILLS SECTION ==================== -->
+<section class="section reveal" id="skills">
+    <div class="section-header">
+        <h2>我的技能</h2>
+        <div class="section-line"></div>
+        <p>持续学习 · 不断精进</p>
+    </div>
+
+    <div class="skills-grid">
+        <!-- Language -->
+        <div class="skill-card">
+            <h3><span class="skill-icon">🌐</span> 语言能力</h3>
+            <ul class="skill-list">
+                <li>通过大学英语四级考试，目前正在备考六级</li>
+                <li>具备良好的英语阅读、理解与基础应用能力</li>
+            </ul>
+            <div class="skill-progress" style="margin-top:1rem;">
+                <div class="skill-progress-item">
+                    <div class="skill-progress-label"><span>英语 CET-4</span><span>已通过</span></div>
+                    <div class="skill-progress-track"><div class="skill-progress-fill" style="width:0%" data-width="75%"></div></div>
+                </div>
+                <div class="skill-progress-item">
+                    <div class="skill-progress-label"><span>英语 CET-6</span><span>备考中</span></div>
+                    <div class="skill-progress-track"><div class="skill-progress-fill" style="width:0%" data-width="50%"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Competitions -->
+        <div class="skill-card">
+            <h3><span class="skill-icon">🏆</span> 学科竞赛经历</h3>
+            <ul class="skill-list">
+                <li>全国大学生数学建模竞赛 — 模型构建与数据分析</li>
+                <li>正大杯市场调查与分析大赛 — 市场调研方法</li>
+                <li>三创赛（电子商务创新、创意及创业挑战赛）— 项目策划与团队协作</li>
+            </ul>
+        </div>
+
+        <!-- Professional Knowledge -->
+        <div class="skill-card">
+            <h3><span class="skill-icon">📚</span> 专业学习能力</h3>
+            <ul class="skill-list">
+                <li>系统了解经济学基础理论与分析框架</li>
+                <li>熟练掌握会计基础知识，擅长编写会计分录</li>
+                <li>具备较强的逻辑思维、总结归纳与学习能力</li>
+            </ul>
+            <div class="skill-progress" style="margin-top:1rem;">
+                <div class="skill-progress-item">
+                    <div class="skill-progress-label"><span>经济学</span><span>80%</span></div>
+                    <div class="skill-progress-track"><div class="skill-progress-fill" style="width:0%" data-width="80%"></div></div>
+                </div>
+                <div class="skill-progress-item">
+                    <div class="skill-progress-label"><span>会计学</span><span>85%</span></div>
+                    <div class="skill-progress-track"><div class="skill-progress-fill" style="width:0%" data-width="85%"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Computer Skills -->
+        <div class="skill-card">
+            <h3><span class="skill-icon">💻</span> 计算机与软件技能</h3>
+            <ul class="skill-list">
+                <li>熟练使用 Word、Excel、PPT 等 Office 办公软件</li>
+                <li>熟练使用 Python 进行基础数据处理与简单编程</li>
+                <li>掌握 MySQL 数据库基础操作与数据管理能力</li>
+            </ul>
+            <div class="skill-progress" style="margin-top:1rem;">
+                <div class="skill-progress-item">
+                    <div class="skill-progress-label"><span>Office 办公软件</span><span>90%</span></div>
+                    <div class="skill-progress-track"><div class="skill-progress-fill" style="width:0%" data-width="90%"></div></div>
+                </div>
+                <div class="skill-progress-item">
+                    <div class="skill-progress-label"><span>Python</span><span>65%</span></div>
+                    <div class="skill-progress-track"><div class="skill-progress-fill" style="width:0%" data-width="65%"></div></div>
+                </div>
+                <div class="skill-progress-item">
+                    <div class="skill-progress-label"><span>MySQL</span><span>60%</span></div>
+                    <div class="skill-progress-track"><div class="skill-progress-fill" style="width:0%" data-width="60%"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== EXPERIENCE SECTION ==================== -->
+<section class="section reveal" id="experience">
+    <div class="section-header">
+        <h2>学生工作 & 志愿服务</h2>
+        <div class="section-line"></div>
+        <p>严于律己 · 甘于奉献</p>
+    </div>
+
+    <!-- Personal Summary -->
+    <div class="mbti-detail" style="max-width:800px;margin:0 auto;">
+        <div class="mbti-detail-card" style="border-left-color:var(--accent);">
+            <h3 style="color:var(--accent)">📝 个人简介</h3>
+            <p>我为人性格开朗从容、处事沉稳内敛，做事踏实严谨、责任心强，拥有良好的人际沟通能力与团队协作意识，善于配合统筹、高效完成各项事务。学习方面态度端正自律，勤奋上进、精益求精，坚持将专业理论与实践应用相结合，不断查漏补缺、深耕专业知识，持续提升个人综合素养与专业实操能力。在集体与日常事务中严于律己、认真负责，执行力强、处事周到，积极主动配合完成各项工作，热心服务身边同学，甘于奉献担当，具备较强的集体荣誉感与务实靠谱的处事作风。</p>
+        </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline" style="margin-top:3rem;">
+        <div class="timeline-item">
+            <h3>📋 班级团支书 <span style="font-weight:400;font-size:0.85rem;color:var(--text-muted);">— 大一学年</span></h3>
+            <p>认真负责团员日常管理、团费规范收缴、团员档案信息整理更新、团内资料归档上报等基础工作，积极策划开展各类主题团日学习活动，按时完成团组织各项任务，扎实做好团员思想引领与团务日常事务。</p>
+        </div>
+        <div class="timeline-item">
+            <h3>📌 班级组织委员 <span style="font-weight:400;font-size:0.85rem;color:var(--text-muted);">— 现阶段</span></h3>
+            <p>统筹班级各类文体、学风及团建活动策划、流程安排与现场落地执行，精准做好各项通知下发、人员统筹协调、班级内务统筹对接等工作，能够合理规划分工、有序推进活动开展，在长期学生工作中不断锻炼提升自身统筹规划、沟通协调与综合组织能力。</p>
+        </div>
+        <div class="timeline-item">
+            <h3>🤝 志愿服务</h3>
+            <ul>
+                <li>参与校园清洁文明、环境维护等志愿服务</li>
+                <li>参与学校迎新工作，为新生提供引导与咨询服务</li>
+                <li>参与蓝信封志愿活动，给乡村小朋友传递温暖</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== CONTACT SECTION ==================== -->
+<section class="section reveal" id="contact">
+    <div class="section-header">
+        <h2>联系我</h2>
+        <div class="section-line"></div>
+        <p>期待与你交流</p>
+    </div>
+
+    <div class="contact-wrap">
+        <div class="contact-logo">
+            <img src="photo/logo.png" alt="Logo">
+        </div>
+        <div class="contact-info">
+            <div class="contact-item">
+                <div class="c-icon phone">📞</div>
+                <div>
+                    <div class="c-label">姓名</div>
+                    <div class="c-value">魏家诚</div>
+                </div>
+            </div>
+            <div class="contact-item">
+                <div class="c-icon phone">📞</div>
+                <div>
+                    <div class="c-label">电话</div>
+                    <div class="c-value">13720302631</div>
+                </div>
+            </div>
+            <div class="contact-item">
+                <div class="c-icon qq">💬</div>
+                <div>
+                    <div class="c-label">QQ</div>
+                    <div class="c-value">1842164045</div>
+                </div>
+            </div>
+            <div class="contact-item">
+                <div class="c-icon wechat">💬</div>
+                <div>
+                    <div class="c-label">微信</div>
+                    <div class="c-value">wanjuche0609</div>
+                </div>
+            </div>
+            <div class="contact-item">
+                <div class="c-icon email">📧</div>
+                <div>
+                    <div class="c-label">邮箱</div>
+                    <div class="c-value">13720302631@163.com</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="motto">勤学笃行，日新日进</div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="footer">
+    <p>&copy; 2026 魏家诚 · 湖北大学商学院 · 大数据管理与应用 2024级</p>
+</footer>
+
+<!-- ==================== LIGHTBOX ==================== -->
+<div class="lightbox">
+    <button class="lightbox-close">&times;</button>
+    <button class="lightbox-prev">‹</button>
+    <img src="" alt="预览图片">
+    <button class="lightbox-next">›</button>
+</div>
+
+<!-- ==================== BACK TO TOP ==================== -->
+<button class="back-to-top" aria-label="回到顶部">↑</button>
+
+<!-- Scripts -->
+<script src="assets/script.js"></script>
+</body>
+</html>
