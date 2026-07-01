@@ -14,16 +14,43 @@
 <!-- ========== 流动粒子画布 ========== -->
 <canvas id="particleCanvas"></canvas>
 
-<!-- ========== 导航栏 · 毛玻璃 ========== -->
+<!-- ========== 导航栏 · 容器导航 ========== -->
 <nav class="nav">
     <div class="nav-inner">
         <a href="index.html" class="nav-logo">魏家诚</a>
-        <div class="nav-links">
-            <a href="index.html" class="active">首页</a>
-            <a href="about.html">关于我</a>
-            <a href="hobby.html">兴趣爱好</a>
-            <a href="skill.html">我的技能</a>
-            <a href="contact.html">联系我</a>
+        <div class="nav-menu">
+            <a href="index.html" class="nav-item no-sub active">首页</a>
+            <div class="nav-item-group">
+                <a href="about.html" class="nav-item">关于我</a>
+                <div class="nav-dropdown">
+                    <a href="about.html#profile">个人简介</a>
+                    <a href="about.html#mbti">MBTI 人格</a>
+                </div>
+            </div>
+            <div class="nav-item-group">
+                <a href="hobby.html" class="nav-item">兴趣爱好</a>
+                <div class="nav-dropdown">
+                    <a href="hobby.html#travel">旅行</a>
+                    <a href="hobby.html#movie">电影</a>
+                    <a href="hobby.html#food">美食</a>
+                    <a href="hobby.html#party">聚会</a>
+                </div>
+            </div>
+            <div class="nav-item-group">
+                <a href="skill.html" class="nav-item">我的技能</a>
+                <div class="nav-dropdown">
+                    <a href="skill.html#tech">技术栈</a>
+                    <a href="skill.html#intern">实习经历</a>
+                    <a href="skill.html#service">学生工作</a>
+                </div>
+            </div>
+            <div class="nav-item-group">
+                <a href="contact.html" class="nav-item">联系我</a>
+                <div class="nav-dropdown">
+                    <a href="contact.html">联系方式</a>
+                    <a href="https://github.com" target="_blank">GitHub</a>
+                </div>
+            </div>
         </div>
         <button class="nav-toggle" aria-label="菜单">
             <span></span><span></span><span></span>
@@ -35,7 +62,7 @@
 <div class="hero-wrapper">
     <div class="hero-card">
         <img src="photo/logo.png" alt="魏家诚" class="hero-avatar">
-        <h1>魏家诚</h1>
+        <h1 class="split-text">魏家诚</h1>
         <p class="subtitle">湖北大学商学院 · 2024级大数据管理与应用</p>
         <p class="subtitle" style="margin-top:0.15rem;">学号：202431112052029 · 组织委员</p>
         <p class="tagline">开朗从容 · 踏实严谨 · 勤学笃行 · 日新日进</p>

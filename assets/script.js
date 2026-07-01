@@ -7,13 +7,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ========== DOM ELEMENTS ==========
     const nav = document.querySelector('.nav');
-    const navLinks = document.querySelectorAll('.nav-links a');
+    const navItems = document.querySelectorAll('.nav-menu .nav-item');
     const navToggle = document.querySelector('.nav-toggle');
-    const navMenu = document.querySelector('.nav-links');
+    const navMenu = document.querySelector('.nav-menu');
+    const navGroups = document.querySelectorAll('.nav-item-group');
     const backToTop = document.querySelector('.back-to-top');
     const starBg = document.getElementById('starfield');
     const particleCanvas = document.getElementById('particleCanvas');
-    const hobbyImgs = document.querySelectorAll('.hobby-imgs img');
+    const hobbyImgs = document.querySelectorAll('.hobby-imgs img, .bounce-cards img');
     const lightbox = document.querySelector('.lightbox');
     const lightboxImg = lightbox ? lightbox.querySelector('img') : null;
     const lightboxClose = lightbox ? lightbox.querySelector('.lightbox-close') : null;
@@ -202,8 +203,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function setActiveNav() {
         var current = getCurrentPage();
-        if (!navLinks.length) return;
-        navLinks.forEach(function(link) {
+        if (!navItems.length) return;
+        navItems.forEach(function(link) {
             link.classList.remove('active');
             var href = link.getAttribute('href');
             if (href && href.includes(current + '.html')) link.classList.add('active');
@@ -227,6 +228,25 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // ========== MOBILE DROPDOWN TOGGLE ==========
+    if (navGroups.length && window.innerWidth <= 768) {
+        navGroups.forEach(function(group) {
+            var trigger = group.querySelector('.nav-item');
+            if (!trigger) return;
+            trigger.addEventListener('click', function(e) {
+                if (window.innerWidth > 768) return;
+                e.preventDefault();
+                group.classList.toggle('expanded');
+            });
+        });
+    }
+
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 768) {
+            navGroups.forEach(function(g) { g.classList.remove('expanded'); });
+        }
+    });
 
     // ========== BACK TO TOP ==========
     function updateBackToTop() {
@@ -337,5 +357,162 @@ document.addEventListener('DOMContentLoaded', function() {
     updateNavShadow();
     updateBackToTop();
     setTimeout(checkAnimations, 400);
+
+    /* ============================================
+       SPLIT TEXT · 逐字入场动画
+       ============================================ */
+    function initSplitText() {
+        var splitElements = document.querySelectorAll('.split-text');
+        if (!splitElements.length) return;
+
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (!entry.isIntersecting) return;
+
+                var container = entry.target;
+                var chars = container.querySelectorAll('.char');
+                if (!chars.length) return;
+
+                chars.forEach(function(char, index) {
+                    setTimeout(function() {
+                        char.classList.add('visible');
+                    }, index * 50); // 50ms delay per character
+                });
+
+                // Callback when all letters have animated
+                var totalDuration = chars.length * 50 + 600;
+                setTimeout(function() {
+                    console.log('All letters have animated!');
+                }, totalDuration);
+
+                observer.unobserve(container);
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '-100px'
+        });
+
+        splitElements.forEach(function(el) {
+            // Skip if already processed
+            if (el.querySelector('.char')) return;
+
+            var text = el.textContent || '';
+            var chars = text.split('');
+
+            el.textContent = '';
+            el.style.visibility = 'visible';
+
+            chars.forEach(function(ch) {
+                var span = document.createElement('span');
+                span.className = 'char';
+                span.textContent = ch === ' ' ? '\u00A0' : ch;
+                span.style.transitionDelay = '0s'; // will be handled by setTimeout
+                el.appendChild(span);
+            });
+
+            observer.observe(el);
+        });
+    }
+
+    // Run after a short delay to ensure DOM is ready
+    setTimeout(initSplitText, 100);
+
+    /* ============================================
+       BOUNCE CARDS · 扇形堆叠入场动画
+       ============================================ */
+    function initBounceCards() {
+        var containers = document.querySelectorAll('.bounce-cards');
+        if (!containers.length) return;
+
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (!entry.isIntersecting) return;
+
+                var items = entry.target.querySelectorAll('.bounce-card-item');
+                if (!items.length) return;
+
+                items.forEach(function(item, i) {
+                    setTimeout(function() {
+                        item.classList.add('visible');
+                    }, 100 + i * 80); // stagger: 80ms per card
+                });
+
+                observer.unobserve(entry.target);
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '-50px'
+        });
+
+        containers.forEach(function(container) {
+            observer.observe(container);
+        });
+    }
+
+    initBounceCards();
+
+    /* ============================================
+       GRAINIENT · 动态渐变 + 噪点背景
+       ============================================ */
+    const grainientCanvas = document.querySelector('.grainient-bg');
+    if (grainientCanvas) {
+        const ctx = grainientCanvas.getContext('2d');
+        let w, h, t = 0;
+
+        function resize() {
+            w = grainientCanvas.width = window.innerWidth;
+            h = grainientCanvas.height = window.innerHeight;
+        }
+
+        // 简易 2D 噪声 (sin 组合, 类 simplex warp)
+        const noise = (x, y, s) =>
+            Math.sin(x * 1.3 + s) * Math.cos(y * 1.7 + s * 0.7)
+          + Math.sin(x * 2.1 - s * 0.5) * Math.cos(y * 1.1 + s * 0.4) * 0.6
+          + Math.cos(x * 0.8 + y * 1.4 + s * 0.3) * 0.4;
+
+        // 预渲染噪点纹理 (256×256, 复用避免逐帧生成)
+        const grainSize = 256;
+        const grainCanvas = document.createElement('canvas');
+        grainCanvas.width = grainCanvas.height = grainSize;
+        const gctx = grainCanvas.getContext('2d');
+        const gd = gctx.createImageData(grainSize, grainSize);
+        for (let i = 0; i < gd.data.length; i += 4) {
+            const v = 127 + (Math.random() - 0.5) * 50;  // grain amount ~0.1
+            gd.data[i] = gd.data[i + 1] = gd.data[i + 2] = v;
+            gd.data[i + 3] = 25; // low alpha
+        }
+        gctx.putImageData(gd, 0, 0);
+        const grainPattern = ctx.createPattern(grainCanvas, 'repeat');
+
+        function draw() {
+            t += 0.002; // timeSpeed ≈ 0.5
+
+            // 动态渐变色标位置, 受 warp 驱动
+            const p1 = (noise(0.3, 0.2, t * 1.0) * 0.12 + 0.15);
+            const p2 = (noise(0.6, 0.4, t * 0.8) * 0.12 + 0.42);
+            const p3 = (noise(0.9, 0.3, t * 1.2) * 0.12 + 0.68);
+
+            const grad = ctx.createLinearGradient(0, 0, w, h);
+            grad.addColorStop(0,      '#F43F5E');  // color1
+            grad.addColorStop(p1,     '#EAB308');  // color2
+            grad.addColorStop(p2,     '#EC4899');  // color3
+            grad.addColorStop(p3,     '#F43F5E');  // back to color1
+            grad.addColorStop(1,      '#EAB308');
+
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, w, h);
+
+            // 噪点叠加
+            ctx.fillStyle = grainPattern;
+            ctx.fillRect(0, 0, w, h);
+
+            requestAnimationFrame(draw);
+        }
+
+        resize();
+        window.addEventListener('resize', resize);
+        draw();
+    }
+
 
 });

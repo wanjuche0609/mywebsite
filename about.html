@@ -8,16 +8,45 @@
 </head>
 <body>
 
+<canvas class="grainient-bg"></canvas>
+
 <!-- ========== NAVIGATION ========== -->
 <nav class="nav">
     <div class="nav-inner">
         <a href="index.html" class="nav-logo">魏家诚</a>
-        <div class="nav-links">
-            <a href="index.html">首页</a>
-            <a href="about.html" class="active">关于我</a>
-            <a href="hobby.html">兴趣爱好</a>
-            <a href="skill.html">我的技能</a>
-            <a href="contact.html">联系我</a>
+        <div class="nav-menu">
+            <a href="index.html" class="nav-item no-sub">首页</a>
+            <div class="nav-item-group">
+                <a href="about.html" class="nav-item active">关于我</a>
+                <div class="nav-dropdown">
+                    <a href="about.html#profile">个人简介</a>
+                    <a href="about.html#mbti">MBTI 人格</a>
+                </div>
+            </div>
+            <div class="nav-item-group">
+                <a href="hobby.html" class="nav-item">兴趣爱好</a>
+                <div class="nav-dropdown">
+                    <a href="hobby.html#travel">旅行</a>
+                    <a href="hobby.html#movie">电影</a>
+                    <a href="hobby.html#food">美食</a>
+                    <a href="hobby.html#party">聚会</a>
+                </div>
+            </div>
+            <div class="nav-item-group">
+                <a href="skill.html" class="nav-item">我的技能</a>
+                <div class="nav-dropdown">
+                    <a href="skill.html#tech">技术栈</a>
+                    <a href="skill.html#intern">实习经历</a>
+                    <a href="skill.html#service">学生工作</a>
+                </div>
+            </div>
+            <div class="nav-item-group">
+                <a href="contact.html" class="nav-item">联系我</a>
+                <div class="nav-dropdown">
+                    <a href="contact.html">联系方式</a>
+                    <a href="https://github.com" target="_blank">GitHub</a>
+                </div>
+            </div>
         </div>
         <button class="nav-toggle" aria-label="菜单">
             <span></span><span></span><span></span>
@@ -28,13 +57,13 @@
 <div class="page-wrapper">
     <div class="page-container">
         <div class="page-header">
-            <h1>关于我 · MBTI 人格</h1>
+            <h1 class="split-text">关于我 · MBTI 人格</h1>
             <div class="line"></div>
             <p>了解我的人格特质与性格画像</p>
         </div>
 
         <!-- 基本信息卡片 -->
-        <div class="glass-card" style="max-width:680px;margin:0 auto 2.5rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0.8rem;text-align:center;">
+        <div id="profile" class="glass-card" style="max-width:680px;margin:0 auto 2.5rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0.8rem;text-align:center;">
             <div><span style="color:var(--text-muted);font-size:0.8rem;">籍贯</span><br><strong>河南宝丰</strong></div>
             <div><span style="color:var(--text-muted);font-size:0.8rem;">出生年月</span><br><strong>2006年6月</strong></div>
             <div><span style="color:var(--text-muted);font-size:0.8rem;">政治面貌</span><br><strong>共青团员</strong></div>
@@ -43,7 +72,7 @@
         </div>
 
         <!-- MBTI Header -->
-        <div class="mbti-header-row">
+        <div id="mbti" class="mbti-header-row">
             <div class="mbti-img-wrap">
                 <img src="photo/mbti.jpg" alt="MBTI测试结果">
             </div>

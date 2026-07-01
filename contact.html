@@ -8,15 +8,44 @@
 </head>
 <body>
 
+<canvas class="grainient-bg"></canvas>
+
 <nav class="nav">
     <div class="nav-inner">
         <a href="index.html" class="nav-logo">魏家诚</a>
-        <div class="nav-links">
-            <a href="index.html">首页</a>
-            <a href="about.html">关于我</a>
-            <a href="hobby.html">兴趣爱好</a>
-            <a href="skill.html">我的技能</a>
-            <a href="contact.html" class="active">联系我</a>
+        <div class="nav-menu">
+            <a href="index.html" class="nav-item no-sub">首页</a>
+            <div class="nav-item-group">
+                <a href="about.html" class="nav-item">关于我</a>
+                <div class="nav-dropdown">
+                    <a href="about.html#profile">个人简介</a>
+                    <a href="about.html#mbti">MBTI 人格</a>
+                </div>
+            </div>
+            <div class="nav-item-group">
+                <a href="hobby.html" class="nav-item">兴趣爱好</a>
+                <div class="nav-dropdown">
+                    <a href="hobby.html#travel">旅行</a>
+                    <a href="hobby.html#movie">电影</a>
+                    <a href="hobby.html#food">美食</a>
+                    <a href="hobby.html#party">聚会</a>
+                </div>
+            </div>
+            <div class="nav-item-group">
+                <a href="skill.html" class="nav-item">我的技能</a>
+                <div class="nav-dropdown">
+                    <a href="skill.html#tech">技术栈</a>
+                    <a href="skill.html#intern">实习经历</a>
+                    <a href="skill.html#service">学生工作</a>
+                </div>
+            </div>
+            <div class="nav-item-group">
+                <a href="contact.html" class="nav-item active">联系我</a>
+                <div class="nav-dropdown">
+                    <a href="contact.html">联系方式</a>
+                    <a href="https://github.com" target="_blank">GitHub</a>
+                </div>
+            </div>
         </div>
         <button class="nav-toggle" aria-label="菜单">
             <span></span><span></span><span></span>
@@ -27,7 +56,7 @@
 <div class="page-wrapper">
     <div class="page-container">
         <div class="page-header">
-            <h1>联系我</h1>
+            <h1 class="split-text">联系我</h1>
             <div class="line"></div>
             <p>期待与你交流</p>
         </div>
